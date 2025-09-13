@@ -11,7 +11,6 @@ class Product(models.Model):
         ('Football', 'Football Shoes'),
         ('Match Ball', 'Football'),
     ]
-
     name = models.CharField(max_length=50)
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     price = models.PositiveIntegerField()
