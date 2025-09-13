@@ -1,5 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
 
 <h1>{{appname}}</h1>
 
 <p>{{name}}</p>
 <p>{{npm}}</p>
+
+<a href="{% url 'main:create_product' %}"><button>Add Product</button></a>
+
+{% if not product_list %} 
+<p> There are no products available. </p>
+
+{% else %}
+{% for product in product_list %}
+<div>
+    <a href="/"><h2>{{product.name}}</h2></a>
+    Price: Rp. {{product.price}} | <b>{{product.category}}</b>
+    <br/>
+    {% if product.thumbnail %} 
+    <img src="{{product.thumbnail}}" alt="thumbnail" width="120" height="150">
+    <br/>
+    {% endif %}
+</div>
+<br/>
+{% endfor %}
+
+{% endif %}
+
+
+{% endblock content %}
