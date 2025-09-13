@@ -5,11 +5,11 @@ app_name = 'main'
 
 urlpatterns = [
     path('', show_main, name='show_main'),
-    path('xml/<str:id>/', show_xml_by_id),
-    path('json/<str:id>/', show_json_by_id),
+    path('xml/<str:idproduct>/', show_xml_by_id),
+    path('json/<str:idproduct>/', show_json_by_id),
     path('json/', show_json),
     path('xml/', show_xml),
     path('add/', create_product, name="create_product"),
-    path('productdetail/<str:id>', show_product, name="show_product"),
+    path('productdetail/<str:idproduct>', show_product, name="show_product"),
     path('browse/', show_catalogue, name="show_catalogue"),
     ]

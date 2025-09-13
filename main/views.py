@@ -33,8 +33,8 @@ def create_product(request):
     context = {'form': form}
     return render(request, "create.html", context)
 
-def show_product(request, id):
-    product = get_object_or_404(Product, pk=id)
+def show_product(request, idproduct):
+    product = get_object_or_404(Product, pk=idproduct)
     context = {'product': product}
 
     return render(request, "product_detail.html", context)
@@ -50,17 +50,17 @@ def show_json(request):
     json = serializers.serialize("json", item_list)
     return HttpResponse(json, content_type="application/json")
 
-def show_xml_by_id(request, id):
+def show_xml_by_id(request, idproduct):
     try:
-        item = Product.objects.filter(pk=id)
+        item = Product.objects.filter(pk=idproduct)
         xml = serializers.serialize("xml", item)
         return HttpResponse(xml, content_type="application/xml")
     except Product.DoesNotExist:
         return HttpResponse(status=404)
 
-def show_json_by_id(request, id):
+def show_json_by_id(request, idproduct):
     try:
-        item = Product.objects.filter(pk=id)
+        item = Product.objects.filter(pk=idproduct)
         json = serializers.serialize("json", item)
         return HttpResponse(json, content_type="application/json")
     except Product.DoesNotExist:

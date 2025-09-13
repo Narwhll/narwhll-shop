@@ -28,7 +28,7 @@
 {% for product in product_list %}
 {% if product.is_featured %}
 <div>
-    <a href="{% url 'main:show_product' product.id %}"><h2>{{product.name}}</h2></a>
+    <a href="{% url 'main:show_product' product.idproduct %}"><h2>{{product.name}}</h2></a>
     Price: {{product.in_rupiah}} | <b>{{product.category}}</b>
     <br/>
     {% if product.thumbnail %} 

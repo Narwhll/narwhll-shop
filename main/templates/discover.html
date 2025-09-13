@@ -10,7 +10,7 @@
 {% for product in product_list %}
 <hr/>
 <div>
-    <a href="{% url 'main:show_product' product.id %}"><h2>{{product.name}}</h2></a>
+    <a href="{% url 'main:show_product' product.idproduct %}"><h2>{{product.name}}</h2></a>
      | <b>{{product.category}}</b>
     <br/>
     <br/>
