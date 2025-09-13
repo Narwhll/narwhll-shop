@@ -6,23 +6,38 @@
 <p>{{name}}</p>
 <p>{{npm}}</p>
 
-<a href="{% url 'main:create_product' %}"><button>Add Product</button></a>
+<table>
+    <tr>
+        <td>
+            <a href="{% url 'main:create_product' %}"><button>Add Product</button></a>
+        </td>
+        <td>
+            <a href="{% url 'main:show_catalogue' %}"><button>All Products</button></a>
+        </td>
+    </tr>
+</table>
 
+
+<hr/>
 {% if not product_list %} 
 <p> There are no products available. </p>
 
 {% else %}
+
+<h3>Featured this Week</h3>
 {% for product in product_list %}
+{% if product.is_featured %}
 <div>
-    <a href="/"><h2>{{product.name}}</h2></a>
-    Price: Rp. {{product.price}} | <b>{{product.category}}</b>
+    <a href="{% url 'main:show_product' product.id %}"><h2>{{product.name}}</h2></a>
+    Price: {{product.in_rupiah}} | <b>{{product.category}}</b>
     <br/>
     {% if product.thumbnail %} 
-    <img src="{{product.thumbnail}}" alt="thumbnail" width="120" height="150">
+    <img src="{{product.thumbnail}}" alt="thumbnail" width="150" height="150">
     <br/>
     {% endif %}
 </div>
 <br/>
+{% endif %}
 {% endfor %}
 
 {% endif %}

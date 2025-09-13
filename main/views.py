@@ -16,6 +16,13 @@ def show_main(request):
 
     return render(request, "main.html", context)
 
+def show_catalogue(request):
+    product_list = Product.objects.all()
+    context = {
+        'product_list': product_list,
+    }
+    return render(request, "discover.html", context)
+
 def create_product(request):
     form = ProductForm(request.POST or None)
 

@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div>
+    <a href="{% url 'main:show_main' %}"><button>Back to Home Page</button></a>
+    <table>
+        <tr>
+            <b><h1>{{product.name}}</h1></b>
+        </tr>
+        <tr>
+            <td>
+                {% if product.thumbnail %}
+                <img src="{{ product.thumbnail }}" width="300px" height="300px">
+                {% endif %}
+            </td>
+            <td>
+                {% if product.is_featured %}
+                | <b>Featured </b>
+                {% endif %}
+                | <i>{{product.category}}</i>
+                <p>| Price: {{product.in_rupiah}}</p>
+
+                <p>| {{product.description}}</p>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+{% endblock content %}
