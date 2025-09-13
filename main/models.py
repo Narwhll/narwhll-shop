@@ -23,4 +23,5 @@ class Product(models.Model):
         return self.name
     
     def in_rupiah(self):
-        return locale.currency(self.price, grouping=True, symbol=True)
+        formatted = f"Rp{self.price:,.0f}".replace(",", ".")
+        return formatted
