@@ -1,6 +1,8 @@
 Davin Fauzan Akmalianto 2406409504 
 Link = https://davin-fauzan-narwhllshop.pbp.cs.ui.ac.id/
 
+======================TUGAS 2========================
+
 1. 
  - "Membuat sebuah proyek Django baru." = membuat virtual environment dalam folder narwhll-shop, kemudian menginstall requirements yang diperlukan untuk memulai sebuah project django melalui sebuah .txt, kemudian menjalankan proyek dengan command yang disediakan django. setelah itu, membuat file .env serta .env.prod untuk membuat pengaturan environment untuk sesi production dan sesi non production.
  - "Membuat aplikasi dengan nama main pada proyek tersebut." =  menjalankan command 'python manage.py runserver main'.
@@ -21,4 +23,35 @@ Link = https://davin-fauzan-narwhllshop.pbp.cs.ui.ac.id/
 
 5. menurut saya, framework django dijadikan permulaan belajar karena sangat praktis untuk digunakan, dan ramah untuk pemula. Semua yang dibutuhkan pemula juga sudah ada di package django.
 
-6. tidak
+6. tidak ada.
+
+
+=====================TUGAS 3========================
+
+1. Data delivery sangat dibutuhkan dalam pengimplementasian sebuah platform agar sebagai programmer kita dapat dengan mudah mengakses serta menggunakan data yang dibutuhkan dalam kode kita.
+
+2. JSON, karena secara visual juga lebih mudah dicerna dibandingkan dengan XML, serta lebih praktis. XML juga membutuhkan waktu yg lebih lama untuk di-parse. Kalau dokumennya sangat kompleks, mungkin XML akan lebih digunakan.
+
+3. is_valid() digunakan untuk memvalidasi isi dari form yang telah disediakan. Apabila semua sudah sesuai dengan tipe data yang ditentukan, maka is_valid akan bernilai True, dan sebaliknya.
+
+4. csrf_token adalah sebuah token yang di generate ketika user sedang menggunakan website (atau sedang login ke web tersebut). Token user kemudian akan di crosscheck dengan token yang menempel ketika melakukan sebuah request. Apabila token user sama dengan token yang membuat request, maka prosesi akan dilanjutkan, sementara jika berbeda akan gagal. CSRF_Token sangat berguna dalam mengatasi serangan dari para hacker/penipu yang ingin mengakses akun user. Apabila tidak memakai csrf_token, penyerang dengan mudah bisa mengirimkan kita sebuah link yang sudah berisi request misal mentransfer uang. Ketika kita klik, karena kita sudah login ke web tersebut, prosesi transfer akan langsung dilakukan karena tidak adanya crosscheck token csrf.
+
+5. 
+- "Tambahkan 4 fungsi views baru untuk melihat objek yang sudah ditambahkan dalam format XML, JSON, XML by ID, dan JSON by ID." =
+Buat keempat fungsi tersebut dengan mengimpor serializers, yaitu suatu fungsi yang digunakan untuk mem-parse informasi ke xml/json.
+- "Membuat routing URL untuk masing-masing views yang telah ditambahkan pada poin 1." =
+Setelah membuat keempat fungsi tersebut, buat path mereka masing-masing di dalam file urls.py yang terdapat di direktori main. 
+- "Membuat halaman yang menampilkan data objek model yang memiliki tombol "Add" yang akan redirect ke halaman form, serta tombol "Detail" pada setiap data objek model yang akan menampilkan halaman detail objek." = 
+Dalam main.html yang telah dibuat sebelumnya, buat for loop yang akan menampilkan bbrp detail model, disini saya membuat agar yang ditampilkan hanya yang featured, selengkapnya ada page lain yang menampilkan semua model. Kemudian di main.html tambahkan button Add yang mengdirect ke create.html. Untuk detail setiap objek, saya membuat agar title dari tiap model langsung merujuk kepada detail model tersebut.
+- "Membuat halaman form untuk menambahkan objek model pada app sebelumnya" = 
+Disini saya membuat page create.html untuk menjadi page yang menampilkan form untuk menambah model Product. Sebelum itu, saya membuat forms.py pada main untuk membuat class yang menjadi dasar dari form yang dibuat untuk model Product. Setelah itu, saya membuat fungsi create_product pada views.py untuk menyimpan isi form ketika form sudah valid, serta mengdirect user ke laman utama ketika kelar. Fungsi ini menjadi base dari fungsi form ketika belum submit apa apa.
+- "Membuat halaman yang menampilkan detail dari setiap data objek model."
+Saya membuat page product_detail.html yang menampilkan semua atribut dari model Product. Page ini dapat diakses dari mengklik judul/nama dari model pada website.
+
+6. Tidak ada, sudah sangat baik.
+
+7. Postman:
+XML = ![alt text](ssxml.png)
+JSON = ![alt text](ssjson.png)
+XML by ID = ![alt text](ssxmlbyid.png)
+JSON by ID = ![alt text](ssjsonbyid.png)

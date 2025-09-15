@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from django.core import serializers
 from main.forms import ProductForm
 
+
 # Create your views here.
 def show_main(request):
     product_list = Product.objects.all()
@@ -39,6 +40,13 @@ def show_product(request, id):
 
     return render(request, "product_detail.html", context)
 
+# def show_employee(request):
+#     context = {
+#         'name': "budi",
+#         'age': 20,
+#         'persona': "keren",
+#     }
+#     return render(request, "employee.html", context)
 
 def show_xml(request):
     item_list = Product.objects.all()

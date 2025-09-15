@@ -25,3 +25,8 @@ class Product(models.Model):
     def in_rupiah(self):
         formatted = f"Rp{self.price:,.0f}".replace(",", ".")
         return formatted
+    
+# class Employee(models.Model):
+#     name = models.CharField(max_length=30)
+#     age = models.PositiveIntegerField(default=0)
+#     persona = models.TextField()
