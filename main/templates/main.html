@@ -5,6 +5,7 @@
 
 <p>{{name}}</p>
 <p>{{npm}}</p>
+<p>Last login: {{last_login}}</p>
 
 <table>
     <tr>
@@ -13,6 +14,12 @@
         </td>
         <td>
             <a href="{% url 'main:show_catalogue' %}"><button>All Products</button></a>
+        </td>
+        <td>
+            <a href="{% url 'main:show_myproducts' %}"><button>My Products</button></a>
+        </td>
+        <td>
+            <a href="{% url 'main:logout_user' %}"><button>Logout</button></a>
         </td>
     </tr>
 </table>

@@ -19,7 +19,13 @@
                 {% endif %}
                 | <i>{{product.category}}</i>
                 <p>| Price: {{product.in_rupiah}}</p>
-
+                <p>
+                {% if product.user %}
+                Created by: {{product.user.username}}
+                {% else %}
+                Gada yg buat.
+                {% endif %}
+                </p>
                 <p>| {{product.description}}</p>
             </td>
         </tr>
