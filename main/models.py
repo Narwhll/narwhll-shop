@@ -10,7 +10,8 @@ class Product(models.Model):
         ('Running', 'Running Shoes'),
         ('Indoor', 'Indoor Shoes'),
         ('Football', 'Football Shoes'),
-        ('Match Ball', 'Football'),
+        ('Match Ball', 'Match Ball'),
+        ('Misc', 'Miscellaneous'),
     ]
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)

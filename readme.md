@@ -1,8 +1,10 @@
 Davin Fauzan Akmalianto 2406409504 
 Link = https://davin-fauzan-narwhllshop.pbp.cs.ui.ac.id/
 
-======================TUGAS 2========================
 
+
+<h1> TUGAS 2 </h1>
+<hr/>
 1. 
  - "Membuat sebuah proyek Django baru." = membuat virtual environment dalam folder narwhll-shop, kemudian menginstall requirements yang diperlukan untuk memulai sebuah project django melalui sebuah .txt, kemudian menjalankan proyek dengan command yang disediakan django. setelah itu, membuat file .env serta .env.prod untuk membuat pengaturan environment untuk sesi production dan sesi non production.
  - "Membuat aplikasi dengan nama main pada proyek tersebut." =  menjalankan command 'python manage.py runserver main'.
@@ -25,8 +27,10 @@ Link = https://davin-fauzan-narwhllshop.pbp.cs.ui.ac.id/
 
 6. tidak ada.
 
+<br/>
 
-=====================TUGAS 3========================
+<h1> TUGAS 3 </h1>
+<hr/>
 
 1. Data delivery sangat dibutuhkan dalam pengimplementasian sebuah platform agar sebagai programmer kita dapat dengan mudah mengakses serta menggunakan data yang dibutuhkan dalam kode kita.
 
@@ -55,3 +59,19 @@ XML = ![alt text](ssxml.png)
 JSON = ![alt text](ssjson.png)
 XML by ID = ![alt text](ssxmlbyid.png)
 JSON by ID = ![alt text](ssjsonbyid.png)
+
+<br/>
+
+<h1>TUGAS 4</h1>
+<hr/>
+
+1. AuthenticationForm adalah sebuah class dari django yang memungkinkan pembuat untuk mengadakan form login yang telah dibuat oleh django. Class ini mempermudah programmer agar tidak perlu membuat formnya secara manual dengan html.
+
+2. Autentikasi dengan otorisasi sangat berbeda. Otorisasi memberikan hak akses yang beragam ke tiap user, contohnya seperti memberi hak admin, ataupun hak sebagai guest. Sedangkan autentikasi merupakan sebuah proses memverifikasi identitas sebuah user, yang memungkinkan user untuk login. Contoh implementasi autentikasi adalah AuthenticationForm, yang memungkinkan kita untuk login kepada suatu akun. Kemudian contoh implementasi otorisasi adalah @login_required yang terdapat pada fungsi show_main, berfungsi untuk tidak membiarkan orang2 yang tidak punya akun (tidak punya hak) untuk melihat tampilan utama web.
+
+3. Kelebihan cookies dibanding session adalah kemampuannya untuk tetap ada bahkan setelah browser ditutup, membuat proses jadi semakin cepat. Cache juga akan bertahan meskipun pada browser yang berbeda window. Namun, ukuran cache kecil, jadi apabila data yang ingin disimpan terlalu banyak, maka cache tidak bisa menjadi suatu solusi, berbeda dengan session yang memiliki ukuran lebih besar. Session juga cenderung lebih aman karena semua data disimpan di server, kita hanya menyimpan sessionId kedalam cookies, kemudian sessionId akan mencocokan dengan data yang terdapat pada server untuk dipanggil.
+
+4. Menggunakan cookies sebagai penyimpan data user mempunyai resiko dibobol, namun di django, secara default cookies akan digunakan untuk menyimpan sessionId, jadi tidak menggunakan cookies sebagai penyimpan data user. 
+
+5. 
+
