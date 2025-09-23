@@ -33,6 +33,7 @@ def show_catalogue(request):
     }
     return render(request, "discover.html", context)
 
+@login_required(login_url="main:login_user")
 def show_myproducts(request):
     my_products = Product.objects.filter(user=request.user)
     context = {

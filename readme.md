@@ -65,7 +65,7 @@ JSON by ID = ![alt text](ssjsonbyid.png)
 <h1>TUGAS 4</h1>
 <hr/>
 
-1. AuthenticationForm adalah sebuah class dari django yang memungkinkan pembuat untuk mengadakan form login yang telah dibuat oleh django. Class ini mempermudah programmer agar tidak perlu membuat formnya secara manual dengan html.
+1. AuthenticationForm adalah sebuah class dari django yang memungkinkan pembuat untuk mengadakan form login yang telah dibuat oleh django. Kelebihannya adalah class ini mempermudah programmer agar tidak perlu membuat formnya secara manual dengan html. Kelemahannya mungkin adalah kurang fleksibel dibandingkan dengan membuat form sendiri. 
 
 2. Autentikasi dengan otorisasi sangat berbeda. Otorisasi memberikan hak akses yang beragam ke tiap user, contohnya seperti memberi hak admin, ataupun hak sebagai guest. Sedangkan autentikasi merupakan sebuah proses memverifikasi identitas sebuah user, yang memungkinkan user untuk login. Contoh implementasi autentikasi adalah AuthenticationForm, yang memungkinkan kita untuk login kepada suatu akun. Kemudian contoh implementasi otorisasi adalah @login_required yang terdapat pada fungsi show_main, berfungsi untuk tidak membiarkan orang2 yang tidak punya akun (tidak punya hak) untuk melihat tampilan utama web.
 
@@ -74,4 +74,14 @@ JSON by ID = ![alt text](ssjsonbyid.png)
 4. Menggunakan cookies sebagai penyimpan data user mempunyai resiko dibobol, namun di django, secara default cookies akan digunakan untuk menyimpan sessionId, jadi tidak menggunakan cookies sebagai penyimpan data user. 
 
 5. 
+**Mengimplementasikan fungsi registrasi, login, dan logout untuk memungkinkan pengguna mengakses aplikasi sebelumnya sesuai dengan status login/logoutnya.**
+Pertama, import User dalam models.py agar dapat mengimplementasikan User dalam model Product. Setelah itu, buat fungsi register pada views.py dengan mengimport UserCreationForm bawaan dari Django. Kemudian, import juga AuthenticationForm beserta dengan login dan logout agar dapat mengimplementasikan fungsi autentikasi. Kemudian, daftarkan masing2 fungsi kedalam urlspatternnya masing masing. Lalu, tambahkan @login_required pada semua page yang sekiranya membutuhkan authentikasi, seperti show_main, create_product, myproducts, dll.
 
+**Membuat dua (2) akun pengguna dengan masing-masing tiga (3) dummy data menggunakan model yang telah dibuat sebelumnya untuk setiap akun di lokal.**
+Membuat 2 akun asal kemudian membuat 3 produk random agar membuktikan kalau program berjalan dengan lancar.
+
+**Menghubungkan model Product dengan User.**
+Setelah mengimpor User ke dalam models.py, terapkan user ke model Product, dengan foreign key berupa atribut user yang menjadi penghubung antar Product dengan User.
+
+**Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi.**
+Import HttpResponseRedirect terlebih dahulu di views.py, agar dapat menyimpan cookie ke browser, setelah itu langsung redirect ke page yang diinginkan. Pada fungsi login_user, simpan informasi datetime ketika login dalam bentuk cookies, yang kemudian di masukkan context pada show_main agar dapat ditampilkan. Pada main.html, siapkan template untuk menampilkan nama user yang didapat dari request.user.username, dan juga informasi last_login.
