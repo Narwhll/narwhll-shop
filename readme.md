@@ -84,3 +84,26 @@ Setelah mengimpor User ke dalam models.py, terapkan user ke model Product, denga
 
 - **Menampilkan detail informasi pengguna yang sedang logged in seperti username dan menerapkan cookies seperti last_login pada halaman utama aplikasi.** = 
 Import HttpResponseRedirect terlebih dahulu di views.py, agar dapat menyimpan cookie ke browser, setelah itu langsung redirect ke page yang diinginkan. Pada fungsi login_user, simpan informasi datetime ketika login dalam bentuk cookies, yang kemudian di masukkan context pada show_main agar dapat ditampilkan. Pada main.html, siapkan template untuk menampilkan nama user yang didapat dari request.user.username, dan juga informasi last_login.
+
+<h1>TUGAS 5</h1>
+<hr/>
+
+1. CSS selector akan memprioritaskan css yang paling dekat dengan objeknya, jadi dari inline, kemudian internal, lalu external.
+
+2. Karena di jaman sekarang, web tidak hanya diakses melalui laptop/pc yang berukuran besar, melainkan juga dari hp yang beresolusi lebih kecil. Apabila web tidak responsif, maka akan sangat sulit untuk mengakses web dari resolusi yang tidak didukung. Contoh web responsif, SCELE, yang akan mengecil dan menghadirkan dropdown untuk mengakses dashboard apabila layar terlalu kecil.
+Contoh web yang tidak responsif adalah web web yang masih berupa hanya html seperti web kita pada tutorial 1/2.
+
+3. Margin adalah jarak antara objek tersebut dengan dunia luar, padding adalah jarak content objek ke border objek tersebut, border adalah dinding pemisah objek tersebut dengan dunia luar.
+Cara mengimplementasikannya mungkin seperti membuat kotak dengan isi sebuah kotak. Agar kotak yang dalam tercenter, maka atur padding kotak luar kanan=kiri dan atas=bawah, lalu agar kotak luar memiliki jarak antara kotak luar lain, maka tambahkan margin.
+
+4. Flexbox memungkinkan objek untuk diplace secara fleksibel, misal seperti menggunakan gap agar jarak antara objek terdefinisi tetap, grid bisa dipakai agar tampilan bisa berurut dari atas kebawah.
+
+5. 
+-**Kustomisasi halaman login, register, tambah product, edit product, dan detail product semenarik mungkin.** 
+= Mungkin sebagai gambaran awal, saya mendesign web ini agar memiliki tema merah ke unguan, sehingga color palette webnya akan diatur seperti itu. Kemudian, dengan menggunakan tailwind dengan cara mengimport ke base.html, kita bisa mengatur css di inline masing-masing fungsi.
+-**Kustomisasi halaman daftar product menjadi lebih menarik dan responsive. Kemudian, perhatikan kondisi berikut: Jika pada aplikasi belum ada product yang tersimpan, halaman daftar product akan menampilkan gambar dan pesan bahwa belum ada product yang terdaftar. Jika sudah ada product yang tersimpan, halaman daftar product akan menampilkan detail setiap product dengan menggunakan card (tidak boleh sama persis dengan desain pada Tutorial!).**
+= Menggunakan if statement agar bisa menampilkan gambar ketika sedang tidak ada featured product, kemudian membuat productcard.html agar dapat membuat template untuk setiap product yang ingin ditampilkan. 
+- **Untuk setiap card product, buatlah dua buah button untuk mengedit dan menghapus product pada card tersebut!** 
+= Pada productcard.html, sisipkan 2 buah button jika user.is_authenticated. Button2 ini akan muncul hanya jika akun yang sedang login merupakan user yang membuat produk2 tersebut. Kemudian, sambungkan kedua button ini ke edit_product.html dan untuk delete hanya memanggil fungsi delete_product pada views.py kemudian mengdirect ke main.
+- **Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.**
+= Pada tailwind, kita dapat memberi hidden md agar fitur ini ter hide kepada orang2 yang memakai pc/laptop, dan hanya muncul kepada mobile devices. 
