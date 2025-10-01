@@ -1,53 +1,30 @@
 {% extends 'base.html' %}
 {% block content %}
+{% include 'navbar.html' %}
 
-<h1>{{appname}}</h1>
+<div class="bg-[url('./static/bgutama.jpg')] pt-24 w-full min-h-screen pb-12 bg-cover bg-no-repeat bg-fixed"> 
+    <div class="bg-white/90 mx-auto px-4 py-8 max-w-7xl sm:px-6 lg:px-8 rounded-lg backdrop-blur-sm"> 
 
-<p>Welcome, {{name}}!</p>
-<p>{{npm}}</p>
-<p>Last login: {{last_login}}</p>
+        <div class="bg-white flex justify-center text-center rounded-lg mb-6">
+            <div class="text-center my-5">
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">NarwhllShop</h1>
+                <p class="text-gray-600">Take a look at our featured products!</p>
+            </div>
+        </div>
+    {% if not product_list %} 
+    <p> There are no products available. </p>
 
-<table>
-    <tr>
-        <td>
-            <a href="{% url 'main:create_product' %}"><button>Add Product</button></a>
-        </td>
-        <td>
-            <a href="{% url 'main:show_catalogue' %}"><button>All Products</button></a>
-        </td>
-        <td>
-            <a href="{% url 'main:show_myproducts' %}"><button>My Products</button></a>
-        </td>
-        <td>
-            <a href="{% url 'main:logout_user' %}"><button>Logout</button></a>
-        </td>
-    </tr>
-</table>
+    {% else %}
 
-
-<hr/>
-{% if not product_list %} 
-<p> There are no products available. </p>
-
-{% else %}
-
-<h3>Featured this Week</h3>
-{% for product in product_list %}
-{% if product.is_featured %}
-<div>
-    <a href="{% url 'main:show_product' product.id %}"><h2>{{product.name}}</h2></a>
-    Price: {{product.in_rupiah}} | <b>{{product.category}}</b>
-    <br/>
-    {% if product.thumbnail %} 
-    <img src="{{product.thumbnail}}" alt="thumbnail" width="150" height="150">
-    <br/>
+    <h3>Featured this Week</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for product in product_list %}
+        {% if product.is_featured %}
+            {% include 'productcard.html' with product=product %}   
+        {% endif %} 
+    {% endfor %}
+    </div>
     {% endif %}
+    </div>
 </div>
-<br/>
-{% endif %}
-{% endfor %}
-
-{% endif %}
-
-
 {% endblock content %}
