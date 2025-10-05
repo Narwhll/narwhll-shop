@@ -8,7 +8,7 @@ urlpatterns = [
     path('', show_main, name='show_main'),
     path('xml/<str:id>/', show_xml_by_id),
     path('json/<str:id>/', show_json_by_id),
-    path('json/', show_json),
+    path('json/', show_json, name="show_json"),
     path('xml/', show_xml),
     path('add/', create_product, name="create_product"),
     path('productdetail/<str:id>', show_product, name="show_product"),
@@ -18,6 +18,6 @@ urlpatterns = [
     path('login/', login_user, name="login_user"),
     path('logout/', logout_user, name="logout_user"),
     path('myproducts/', show_myproducts, name="show_myproducts"),
-    path('news/<uuid:id>/edit', edit_product, name='edit_product'),
-    path('news/<uuid:id>/delete', delete_product, name='delete_product'),
+    path('product/<uuid:id>/edit', edit_product, name='edit_product'),
+    path('product/<uuid:id>/delete', delete_product, name='delete_product'),
     ]

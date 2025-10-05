@@ -7,30 +7,188 @@
 
 {% block content %}
 {% include 'navbar.html' %}
-
-<div> 
-    <div class="bg-white flex justify-center text-center rounded-lg mb-6 drop-shadow-md max-w-7xl sm:px-6 lg:px-8 rounded-lg mx-auto">
-        <div class="text-center my-5">
-            <h1 class="text-3xl font-bold text-gray-900 mb-2">
-                <span class="bg-gradient-to-r from-[#a8c0ff] to-[#e7c6ff] bg-clip-text text-transparent">Narwhll</span>Shop
-            </h1>
-            <p class="text-gray-600">Take a look at our featured products!</p>
-        </div>
-    </div>
-    <div class="bg-white/90 mx-auto px-4 py-8 max-w-7xl sm:px-6 lg:px-8 rounded-lg">  
-    {% if not product_list %} 
-    <p> There are no products available. </p>
-
-    {% else %}
-
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {% for product in product_list %}
-        {% if product.is_featured %}
-            {% include 'productcard.html' with product=product %}   
-        {% endif %} 
-    {% endfor %}
-    </div>
-    {% endif %}
+<div class="bg-white flex justify-center text-center rounded-lg mb-6 drop-shadow-md max-w-7xl sm:px-6 lg:px-8 rounded-lg mx-auto">
+    <div class="text-center my-5">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+            <span class="bg-gradient-to-r from-[#a8c0ff] to-[#e7c6ff] bg-clip-text text-transparent">Narwhll</span>Shop
+        </h1>
+        <p class="text-gray-600">Take a look at our featured products!</p>
     </div>
 </div>
+<div class="bg-white/90 mx-auto px-4 py-8 max-w-7xl sm:px-6 lg:px-8 rounded-lg drop-shadow-md">
+    <!-- Loading State -->
+    <div id="loading" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+      <svg class="animate-spin h-8 w-8 text-green-600 inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+      </svg>
+      <p class="text-gray-600 mt-3">Loading product...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error" class="hidden"></div>
+
+    <!-- product Grid -->
+    <div id="grid" class="hidden"></div>
+
+    <!-- Empty State -->
+    <div id="empty" class="bg-white rounded-lg border border-gray-200 p-12 text-center hidden">
+      <div class="w-32 h-32 mx-auto mb-4">
+        <img src="{% static 'image/no-product.png' %}" alt="No product available" class="w-full h-full object-contain">
+      </div>
+      <h3 class="text-lg font-medium text-gray-900 mb-2">No product found.</h3>
+      <a href="{% url 'main:create_product' %}" class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors">
+        Add Product
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+// Configuration
+const product_API_ENDPOINT = "{% url 'main:show_json' %}";
+const CURRENT_USER_ID = "{{ user.id|default_if_none:'' }}";
+
+// DOM Elements
+const loadingSpinner = document.getElementById('loading');
+const errorMessage = document.getElementById('error');
+const emptyStateDisplay = document.getElementById('empty');
+const productGridContainer = document.getElementById('grid');
+
+// Show/hide page sections
+function displayPageSection({ showLoading = false, showError = false, showEmpty = false, showGrid = false }) {
+  loadingSpinner.classList.toggle('hidden', !showLoading);
+  errorMessage.classList.toggle('hidden', !showError);
+  emptyStateDisplay.classList.toggle('hidden', !showEmpty);
+  productGridContainer.classList.toggle('hidden', !showGrid);
+
+  // Add grid classes when showing grid
+  if (showGrid) {
+    productGridContainer.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+  }
+}
+
+// Get readable category name
+function getReadableCategoryName(categoryCode) {
+  const categoryMapping = {
+    Running: 'Running Shoes',
+    Indoor: 'Indoor Shoes',
+    Football: 'Football Shoes',
+    MatchBall: 'Match Ball',
+    Misc: 'Miscellaneous',
+  };
+  return categoryMapping[categoryCode] || categoryCode;
+}
+
+// Create product card element
+function buildproductCardElement(productItem) {
+  const articleElement = document.createElement('article');
+  articleElement.className = 'bg-white rounded-lg border border-gray-200 hover:shadow-[0px_4px_6px_0px_rgba(59,_130,_246,_0.5)] transition-shadow duration-300 overflow-hidden';
+
+  const detailLink = `{% url 'main:show_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+  const editLink = `{% url 'main:edit_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+  const deleteLink = `{% url 'main:delete_product' '00000000-0000-0000-0000-000000000000' %}`.replace('00000000-0000-0000-0000-000000000000', productItem.id);
+
+  const categoryLabel = getReadableCategoryName(productItem.category);
+  const isFeatured = productItem.is_featured;
+
+  const thumbnailHtml = productItem.thumbnail
+    ? `<img src='${productItem.thumbnail}' alt='${productItem.name}' class='w-full h-full object-cover'>`
+    : `<div class='w-full h-full bg-gray-200'></div>`;
+
+  const featuredBadge = isFeatured
+    ? `<span class='inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-yellow-100 text-yellow-800'>Featured</span>`
+    : '';
+
+  const isOwner = CURRENT_USER_ID && Number(CURRENT_USER_ID) === Number(productItem.user);
+
+  let actionButtonsHtml = '';
+  if (isOwner) {
+    actionButtonsHtml = `
+      <div class="flex items-center justify-between pt-4 border-t border-gray-100">
+        <a href="${detailLink}" class="text-[#d10084] hover:text-[#a58cd2] font-medium text-sm transition-colors">Details →</a>
+        <div class="flex space-x-2">
+          <a href='${editLink}' class='text-gray-600 hover:text-gray-700 text-sm transition-colors'>Edit</a>
+          <a href='${deleteLink}' class='text-red-600 hover:text-red-700 text-sm transition-colors' onclick='return confirm("Are you sure you want to delete this product?")'>Delete</a>
+        </div>
+      </div>`;
+  } else {
+    actionButtonsHtml = `
+      <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+        <a href="${detailLink}" class="text-[#d10084] hover:text-[#a58cd2] font-medium text-sm transition-colors">Details →</a>
+      </div>`;
+  }
+
+  const completeCardHtml = `
+    <div class="aspect-[1/1] relative overflow-hidden">
+      <a href="${detailLink}">
+        ${thumbnailHtml}
+        <div class="absolute top-3 left-3">
+          <span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-[#d10084] text-white">${categoryLabel}</span>
+        </div>
+        <div class="absolute top-3 right-3 flex space-x-2">
+          ${featuredBadge}
+        </div>
+      </a>
+    </div>
+    <div class="p-5 flex flex-col flex-1 border-t border-red-600">
+      <h3 class="text-lg font-semibold text-gray-900 mb-3 line-clamp-2 leading-tight">
+        <a href="${detailLink}" class="hover:text-[#d10084] transition-colors">${productItem.name}</a>
+      </h3>
+      <h3 class="text-lg font-semibold text-[#d10084] mb-3 line-clamp-2 leading-tight">
+        ${productItem.price}
+      </h3>
+      <p class="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4 flex-grow">${productItem.description}</p>
+      ${actionButtonsHtml}
+    </div>
+  `;
+
+  articleElement.innerHTML = completeCardHtml;
+  return articleElement;
+}
+
+// Render all product cards
+function renderAllproductCards(productItems) {
+  productGridContainer.innerHTML = '';
+  productItems.forEach(productItem => {
+    const cardElement = buildproductCardElement(productItem);
+    productGridContainer.appendChild(cardElement);
+  });
+}
+
+// Fetch product data from server
+async function fetchproductFromServer() {
+  try {
+    displayPageSection({ showLoading: true });
+
+    const response = await fetch(product_API_ENDPOINT, {
+      headers: { 'Accept': 'application/json' },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch product data from server');
+    }
+
+    const allproductData = await response.json() || [];
+
+    // Filter for featured products only
+    const featuredproduct = allproductData.filter(product => product.is_featured);
+
+    if (featuredproduct.length === 0) {
+      displayPageSection({ showEmpty: true });
+    } else {
+      renderAllproductCards(featuredproduct);
+      displayPageSection({ showGrid: true });
+    }
+  } catch (error) {
+    console.error('Error loading product:', error);
+    displayPageSection({ showError: true });
+  }
+}
+
+// Start application
+fetchproductFromServer();
+</script>
+...
+
 {% endblock content %}

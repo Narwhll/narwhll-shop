@@ -10,7 +10,7 @@ class Product(models.Model):
         ('Running', 'Running Shoes'),
         ('Indoor', 'Indoor Shoes'),
         ('Football', 'Football Shoes'),
-        ('Match Ball', 'Match Ball'),
+        ('MatchBall', 'Match Ball'),
         ('Misc', 'Miscellaneous'),
     ]
 

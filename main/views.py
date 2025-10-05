@@ -71,11 +71,11 @@ def show_json(request):
             'id': str(item.id),
             'name': item.name,
             'description': item.description,
-            'price': item.price,
+            'price': item.in_rupiah(),
             'thumbnail': item.thumbnail,
             'category': item.category,
             'is_featured': item.is_featured,
-            'user': item.user,
+            'user': item.user_id,
         }
         for item in item_list
     ]
