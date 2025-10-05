@@ -1,9 +1,16 @@
+{% load static %}
+
 <nav class="fixed top-0 left-0 w-full bg-white shadow-sm z-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
           <h1 class="text-xl font-semibold text-gray-900">
-            <span class="text-red-600">Narwhll</span><span class="text-black">Shop</span>
+            <a href="{% url 'main:show_main' %}">
+            <div class="flex items-center">
+              <img src="{% static 'image/narwhal.png' %}" class="h-9 w-9 object-contain mr-2"/>
+              <span class="bg-gradient-to-r from-[#a8c0ff] to-[#e7c6ff] bg-clip-text text-transparent">Narwhll</span><span class="text-black">Shop</span>
+            </div>
+            </a>
           </h1>
         </div>
         
@@ -12,9 +19,12 @@
           <a href="/" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Home
           </a>
+          <a href="{% url 'main:show_catalogue' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+            All Products
+          </a> 
           <a href="{% url 'main:create_product' %}" class="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Add Product
-          </a>
+          </a> 
         </div>
         
         <!-- Desktop User Section -->
@@ -22,7 +32,7 @@
           {% if user.is_authenticated %}
             <div class="text-right">
               <div class="text-sm font-medium text-gray-900">{{ name|default:user.username }}</div>
-              <div class="text-xs text-gray-500">{{ npm|default:"Student" }} - {{ class|default:"Class" }}</div>
+              <div class="text-xs text-gray-500">{{ npm|default:"Student" }} - {{ class|default:"Class E" }}</div>
             </div>
             <a href="{% url 'main:logout_user' %}" class="text-red-600 hover:text-red-700 font-medium transition-colors">
               Logout
@@ -60,6 +70,9 @@
           </a>
           <a href="{% url 'main:create_product' %}" class="block text-gray-600 hover:text-gray-900 font-medium py-3 transition-colors">
             Add Product
+          </a>
+          <a href="{% url 'main:show_catalogue' %}" class="block text-gray-600 hover:text-gray-900 font-medium py-3 transition-colors">
+            All Products
           </a>
         </div>
         

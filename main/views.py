@@ -1,7 +1,7 @@
 import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import Product
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.core import serializers
 from main.forms import ProductForm
@@ -15,7 +15,6 @@ from django.contrib.auth.decorators import login_required
 @login_required(login_url="main:login_user")
 def show_main(request):
     product_list = Product.objects.all() 
-    
     context = {
         'appname': 'NarwhllShop',
         'name': request.user.username,
@@ -60,14 +59,6 @@ def show_product(request, id):
 
     return render(request, "product_detail.html", context)
 
-# def show_employee(request):
-#     context = {
-#         'name': "budi",
-#         'age': 20,
-#         'persona': "keren",
-#     }
-#     return render(request, "employee.html", context)
-
 def show_xml(request):
     item_list = Product.objects.all()
     xml = serializers.serialize("xml", item_list)
@@ -75,8 +66,20 @@ def show_xml(request):
 
 def show_json(request):
     item_list = Product.objects.all()
-    json = serializers.serialize("json", item_list)
-    return HttpResponse(json, content_type="application/json")
+    data = [
+        {
+            'id': str(item.id),
+            'name': item.name,
+            'description': item.description,
+            'price': item.price,
+            'thumbnail': item.thumbnail,
+            'category': item.category,
+            'is_featured': item.is_featured,
+            'user': item.user,
+        }
+        for item in item_list
+    ]
+    return JsonResponse(data, safe=False)
 
 def show_xml_by_id(request, id):
     try:

@@ -1,24 +1,30 @@
 {% extends 'base.html' %}
+{% load static %}
+
+{% block meta %}
+<title>NarwhllShop</title>
+{% endblock meta %}
+
 {% block content %}
 {% include 'navbar.html' %}
 
-<div class="bg-[url('./static/bgutama.jpg')] pt-24 w-full min-h-screen pb-12 bg-cover bg-no-repeat bg-fixed"> 
-    <div class="bg-white/90 mx-auto px-4 py-8 max-w-7xl sm:px-6 lg:px-8 rounded-lg backdrop-blur-sm"> 
-
-        <div class="bg-white flex justify-center text-center rounded-lg mb-6">
-            <div class="text-center my-5">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">NarwhllShop</h1>
-                <p class="text-gray-600">Take a look at our featured products!</p>
-            </div>
+<div> 
+    <div class="bg-white flex justify-center text-center rounded-lg mb-6 drop-shadow-md max-w-7xl sm:px-6 lg:px-8 rounded-lg mx-auto">
+        <div class="text-center my-5">
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">
+                <span class="bg-gradient-to-r from-[#a8c0ff] to-[#e7c6ff] bg-clip-text text-transparent">Narwhll</span>Shop
+            </h1>
+            <p class="text-gray-600">Take a look at our featured products!</p>
         </div>
+    </div>
+    <div class="bg-white/90 mx-auto px-4 py-8 max-w-7xl sm:px-6 lg:px-8 rounded-lg">  
     {% if not product_list %} 
     <p> There are no products available. </p>
 
     {% else %}
 
-    <h3>Featured this Week</h3>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for product in product_list %}
+    {% for product in product_list %}
         {% if product.is_featured %}
             {% include 'productcard.html' with product=product %}   
         {% endif %} 
