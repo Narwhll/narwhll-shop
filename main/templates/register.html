@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="form-style">
-  <div class="min-h-screen bg-gray-50 flex items-center justify-center p-8">
+  <div class="w-full min-h-screen flex items-center justify-center p-8 -mt-24 -mb-12 mx-auto sm:p-12">
     <div class="max-w-md w-full relative z-10">
       <div class="bg-white border border-gray-200 rounded-lg p-8 shadow-sm">
       <div class="text-center mb-8">
@@ -39,7 +39,7 @@
         </div>
       {% endif %}
 
-      <form method="POST" action="" class="space-y-5">
+      <form method="POST" action="" class="space-y-5" id="register-form">
         {% csrf_token %}
         
         <div>
@@ -115,4 +115,55 @@
     </div>
   </div>
 </div>
+<script>
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const form = e.target;
+  const formData = new FormData(form);
+  const button = form.querySelector('button[type="submit"]');
+  const oldMsg = document.getElementById('ajax-msg');
+  if (oldMsg) oldMsg.remove();
+
+  button.disabled = true;
+  button.textContent = "Creating Account...";
+
+  try {
+    const res = await fetch("{% url 'main:register' %}", {
+      method: "POST",
+      body: formData,
+      headers: { "X-Requested-With": "XMLHttpRequest" },
+    });
+    const data = await res.json();
+
+    const msg = document.createElement('div');
+    msg.id = 'ajax-msg';
+    msg.className = 'mt-4 px-4 py-3 rounded text-sm border';
+
+    if (data.status === 'success') {
+      msg.classList.add('bg-green-50', 'border-green-200', 'text-[#d10084]');
+      msg.textContent = "Account created! Redirecting...";
+      localStorage.setItem("statusRegister", "Berhasil");
+      form.before(msg);
+      setTimeout(() => window.location.href = "{% url 'main:login_user' %}", 1500);
+    } else {
+      msg.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+      msg.textContent = data.errors?.__all__?.[0]?.message || "Registration failed.";
+      form.before(msg);
+      button.disabled = false;
+      button.textContent = "Create Account";
+    }
+  } catch {
+    const err = document.createElement('div');
+    err.id = 'ajax-msg';
+    err.className = 'mt-4 px-4 py-3 rounded text-sm border bg-red-50 border-red-200 text-red-700';
+    err.textContent = "Could not connect to server.";
+    form.before(err);
+    button.disabled = false;
+    button.textContent = "Create Account";
+  }
+});
+</script>
+
+
 {% endblock content %}

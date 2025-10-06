@@ -1,4 +1,5 @@
 import datetime
+import json
 from django.shortcuts import render, get_object_or_404, redirect
 from main.models import Product
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -9,6 +10,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
 
 
 # Create your views here.
@@ -64,6 +67,7 @@ def show_xml(request):
     xml = serializers.serialize("xml", item_list)
     return HttpResponse(xml, content_type="application/xml")
 
+
 def show_json(request):
     item_list = Product.objects.all()
     data = [
@@ -91,35 +95,103 @@ def show_xml_by_id(request, id):
 
 def show_json_by_id(request, id):
     try:
-        item = Product.objects.filter(pk=id)
-        json = serializers.serialize("json", item)
-        return HttpResponse(json, content_type="application/json")
+        item = Product.objects.select_related('user').get(pk=id)
+        data = {
+            'id': str(item.id),
+            'name': item.name,
+            'description': item.description,
+            'price': item.in_rupiah(),
+            'thumbnail': item.thumbnail,
+            'category': item.category,
+            'is_featured': item.is_featured,
+            'user': item.user_id,
+        }
+        return JsonResponse(data)
     except Product.DoesNotExist:
-        return HttpResponse(status=404)
+        return JsonResponse({'detail': 'Not found'}, status=404)
+
+# def register(request):
+#     form = UserCreationForm()
+#     if request.method == "POST":
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, "Your account has been successfully created!")
+#             return redirect('main:login_user')
+#     context = {'form': form}
+#     return render(request, "register.html", context)
+
+# def login_user(request):
+#     form = AuthenticationForm(request)
+#     if request.method == "POST":
+#         form = AuthenticationForm(data=request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             login(request, user)
+#             response = HttpResponseRedirect(reverse("main:show_main"))
+#             response.set_cookie("last_login", str(datetime.datetime.now()))
+#             return response
+#     context = {"form": form}
+#     return render(request, "login.html", context)
 
 def register(request):
-    form = UserCreationForm()
-    if request.method == "POST":
+    # Logika untuk GET request tidak berubah, tetap menampilkan halaman
+    if request.method == 'GET':
+        form = UserCreationForm()
+        return render(request, "register.html", {"form": form})
+
+    # Logika untuk POST request diubah untuk AJAX
+    elif request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Your account has been successfully created!")
-            return redirect('main:login_user')
-    context = {'form': form}
-    return render(request, "register.html", context)
+            # Mengembalikan JSON jika sukses
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Akun berhasil dibuat! Anda akan dialihkan ke halaman login.'
+            }, status=201)
+        else:
+            # Mengembalikan JSON jika ada error, beserta daftar errornya
+            # json.loads() mengubah string JSON dari form.errors.as_json() menjadi dictionary
+            return JsonResponse({
+                'status': 'error',
+                'errors': json.loads(form.errors.as_json())
+            }, status=400)
 
 def login_user(request):
-    form = AuthenticationForm(request)
-    if request.method == "POST":
+    # Logika untuk GET request tidak berubah
+    if request.method == 'GET':
+        form = AuthenticationForm()
+        return render(request, "login.html", {"form": form})
+    
+    # Logika untuk POST request diubah untuk AJAX
+    elif request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
+            # login(request, user) PENTING! Ini yang membuat session untuk user
             login(request, user)
-            response = HttpResponseRedirect(reverse("main:show_main"))
+            
+            # Siapkan data JSON untuk dikirim
+            response_data = {
+                'status': 'success',
+                'message': 'Login berhasil! Anda akan dialihkan ke halaman utama.'
+            }
+            # Buat JsonResponse
+            response = JsonResponse(response_data, status=200)
+            
+            # Set cookie di object response
             response.set_cookie("last_login", str(datetime.datetime.now()))
+            
             return response
-    context = {"form": form}
-    return render(request, "login.html", context)
+        else:
+            # Mengembalikan JSON jika login gagal/form tidak valid
+            return JsonResponse({
+                'status': 'error',
+                'errors': json.loads(form.errors.as_json())
+            }, status=400)
+
+
 
 def logout_user(request):
     logout(request)
@@ -144,3 +216,27 @@ def delete_product(request, id):
     product = get_object_or_404(Product, pk=id)
     product.delete()
     return HttpResponseRedirect(reverse('main:show_main'))
+
+@csrf_exempt
+@require_POST
+def add_product_entry_ajax(request):
+    name = request.POST.get("name")
+    description = request.POST.get("description")
+    price = request.POST.get("price")
+    category = request.POST.get("category")
+    thumbnail = request.POST.get("thumbnail")
+    is_featured = request.POST.get("is_featured") == 'on' 
+    user = request.user
+
+    new_product = Product(
+        name=name, 
+        description=description,
+        price=price,
+        category=category,
+        thumbnail=thumbnail,
+        is_featured=is_featured,
+        user=user
+    )
+    new_product.save()
+
+    return HttpResponse(b"CREATED", status=201)
