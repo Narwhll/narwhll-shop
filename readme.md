@@ -107,3 +107,16 @@ Cara mengimplementasikannya mungkin seperti membuat kotak dengan isi sebuah kota
 = Pada productcard.html, sisipkan 2 buah button jika user.is_authenticated. Button2 ini akan muncul hanya jika akun yang sedang login merupakan user yang membuat produk2 tersebut. Kemudian, sambungkan kedua button ini ke edit_product.html dan untuk delete hanya memanggil fungsi delete_product pada views.py kemudian mengdirect ke main.
 - **Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.**
 = Pada tailwind, kita dapat memberi hidden md agar fitur ini ter hide kepada orang2 yang memakai pc/laptop, dan hanya muncul kepada mobile devices. 
+
+
+<table>
+<td>
+Nama
+</td>
+<tr>
+Davin
+</tr>
+<tr>
+Fauzan
+</tr>
+</table>
