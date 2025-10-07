@@ -147,7 +147,6 @@ function buildproductCardElement(productItem) {
   return articleElement;
 }
 
-// Render all product cards
 function renderAllproductCards(productItems) {
   productGridContainer.innerHTML = '';
   productItems.forEach(productItem => {
@@ -156,7 +155,6 @@ function renderAllproductCards(productItems) {
   });
 }
 
-// Fetch product data from server
 async function fetchproductFromServer() {
   try {
     displayPageSection({ showLoading: true });
@@ -171,7 +169,6 @@ async function fetchproductFromServer() {
 
     const allproductData = await response.json() || [];
 
-    // Filter for featured products only
     const featuredproduct = allproductData.filter(product => product.is_featured);
 
     if (featuredproduct.length === 0) {

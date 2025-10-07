@@ -135,57 +135,45 @@ def show_json_by_id(request, id):
 #     return render(request, "login.html", context)
 
 def register(request):
-    # Logika untuk GET request tidak berubah, tetap menampilkan halaman
     if request.method == 'GET':
         form = UserCreationForm()
         return render(request, "register.html", {"form": form})
 
-    # Logika untuk POST request diubah untuk AJAX
     elif request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            # Mengembalikan JSON jika sukses
             return JsonResponse({
                 'status': 'success',
                 'message': 'Akun berhasil dibuat! Anda akan dialihkan ke halaman login.'
             }, status=201)
         else:
-            # Mengembalikan JSON jika ada error, beserta daftar errornya
-            # json.loads() mengubah string JSON dari form.errors.as_json() menjadi dictionary
             return JsonResponse({
                 'status': 'error',
                 'errors': json.loads(form.errors.as_json())
             }, status=400)
 
 def login_user(request):
-    # Logika untuk GET request tidak berubah
     if request.method == 'GET':
         form = AuthenticationForm()
         return render(request, "login.html", {"form": form})
     
-    # Logika untuk POST request diubah untuk AJAX
     elif request.method == 'POST':
         form = AuthenticationForm(data=request.POST)
         if form.is_valid():
             user = form.get_user()
-            # login(request, user) PENTING! Ini yang membuat session untuk user
             login(request, user)
             
-            # Siapkan data JSON untuk dikirim
             response_data = {
                 'status': 'success',
                 'message': 'Login berhasil! Anda akan dialihkan ke halaman utama.'
             }
-            # Buat JsonResponse
             response = JsonResponse(response_data, status=200)
             
-            # Set cookie di object response
             response.set_cookie("last_login", str(datetime.datetime.now()))
             
             return response
         else:
-            # Mengembalikan JSON jika login gagal/form tidak valid
             return JsonResponse({
                 'status': 'error',
                 'errors': json.loads(form.errors.as_json())

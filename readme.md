@@ -108,15 +108,17 @@ Cara mengimplementasikannya mungkin seperti membuat kotak dengan isi sebuah kota
 - **Buatlah navigation bar (navbar) untuk fitur-fitur pada aplikasi yang responsive terhadap perbedaan ukuran device, khususnya mobile dan desktop.**
 = Pada tailwind, kita dapat memberi hidden md agar fitur ini ter hide kepada orang2 yang memakai pc/laptop, dan hanya muncul kepada mobile devices. 
 
+<h1>
+TUGAS 6
+</h1>
+<hr/>
 
-<table>
-<td>
-Nama
-</td>
-<tr>
-Davin
-</tr>
-<tr>
-Fauzan
-</tr>
-</table>
+1. **Apa perbedaan antara synchronous request dan asynchronous request?** = Kalau synchronous request, kode akan dilakukan secara berurutan dan kode yg bawah akan terhambat apabila suatu line belum selesai terjalankan. Kalau asynchronous request, jika ada kode yang menghambat, ia akan lanjut ke kode selanjutnya walaupun yg sebelumnya belum selesai ter run. Dalam konteks browser, synchronous akan memblokir interaksi selama belum selesai di run, async tidak.
+
+2. **Bagaimana AJAX bekerja di Django (alur request–response)?** = Setelah mengirim fetch di javascript pagenya ke views.py yang bersangkutan, dia akan menerimanya kemudian mengembalikan response berupa JSON (disini pakenya json, bisa aja XML). Javascript yang ada di page yang merequest akan menerima json tadi lalu memprosesnya ke htmlnya.
+
+3. **Apa keuntungan menggunakan AJAX dibandingkan render biasa di Django?** = Kalau pake ajax tidak perlu rerender ulang setiap kali ke page tersebut, jadi ga makan resource.
+
+4. **Bagaimana cara memastikan keamanan saat menggunakan AJAX untuk fitur Login dan Register di Django?** = Penulisan login(request, user) akan memastikan bahwa yang login itu yang ngirim request, jadi kayak semacam verifikasi gitu.
+
+5. **Bagaimana AJAX mempengaruhi pengalaman pengguna (User Experience) pada website?** = AJAX membuat web terasa lebih cepat dan responsif karna ga perlu re render setiap kali ganti page. Jadi ga akan perlu nunggu loading setiap kali refresh semua page.
